@@ -21,3 +21,7 @@ This Python script utilizes the `nmap` library to scan specified ports or all po
 
 ```bash
 pip install python-nmap
+
+Usage:
+python nmap_scan.py -H <target_host> [-p <target_ports> | --full-scan]
+
