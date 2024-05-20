@@ -20,8 +20,8 @@ This Python script utilizes the `nmap` library to scan specified ports or all po
 2. Install the `python-nmap` library:
 
 ```bash
-pip install python-nmap
-
+pip install python-nmap keyboard
+```
 Examples
 Scan specific ports:
 python nmap_scan.py -H 192.168.1.1 -p 22,80,443
