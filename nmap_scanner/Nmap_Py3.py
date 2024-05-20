@@ -1,8 +1,9 @@
 import argparse
 import nmap
 import threading
-import sys
+import keyboard
 import time
+import sys
 
 progress = 0
 nm_scan = nmap.PortScanner()
@@ -52,19 +53,41 @@ def full_scan(tgt_host):
         print(f"An unexpected error occurred: {e}")
     scan_in_progress = False
 
+def range_scan(tgt_host):
+    global progress, nm_scan, scan_details, scan_in_progress
+    scan_in_progress = True
+    try:
+        nm_scan.scan(tgt_host, '1-100', arguments='-sV')
+        total_ports = 100
+        for i, port in enumerate(nm_scan[tgt_host]['tcp']):
+            state = nm_scan[tgt_host]['tcp'][port]['state']
+            service = nm_scan[tgt_host]['tcp'][port]['name']
+            version = nm_scan[tgt_host]['tcp'][port]['version']
+            scan_details = f"Scanning port {port}: {service} {version} ({state})"
+            print(f"[*] {tgt_host} tcp/{port} {state} {service} {version}")
+            progress = int(((i + 1) / total_ports) * 100)
+    except KeyError as e:
+        print(f"An error occurred: {e}")
+    except nmap.PortScannerError as e:
+        print(f"Nmap scan error: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+    scan_in_progress = False
+
 def check_spacebar():
     global scan_in_progress
     while scan_in_progress:
-        if sys.stdin.read(1) == ' ':
+        if keyboard.is_pressed('space'):
             print(f"\nProgress: {progress}%\nDetails: {scan_details}\n")
-        time.sleep(0.1)
+            time.sleep(1)
 
 def main():
     global scan_in_progress
-    parser = argparse.ArgumentParser(description="Usage: %prog -H <target host> [-p <target port(s)> | --full-scan]")
+    parser = argparse.ArgumentParser(description="Usage: %prog -H <target host> [-p <target port(s)> | --full-scan | --range-scan]")
     parser.add_argument("-H", dest="tgt_host", type=str, required=True, help="specify target host")
     parser.add_argument("-p", dest="tgt_ports", type=str, help="specify target port(s), separated by commas if multiple")
     parser.add_argument("--full-scan", dest="full_scan", action="store_true", help="scan all ports and services")
+    parser.add_argument("--range-scan", dest="range_scan", action="store_true", help="scan ports 1-100 for services and versions")
 
     args = parser.parse_args()
     tgt_host = args.tgt_host
@@ -73,11 +96,13 @@ def main():
 
     if args.full_scan:
         scan_thread = threading.Thread(target=full_scan, args=(tgt_host,))
+    elif args.range_scan:
+        scan_thread = threading.Thread(target=range_scan, args=(tgt_host,))
     elif args.tgt_ports:
         tgt_ports = args.tgt_ports.split(',')
         scan_thread = threading.Thread(target=nmap_scan, args=(tgt_host, tgt_ports))
     else:
-        print("Please specify either -p for target ports or --full-scan for a full scan")
+        print("Please specify either -p for target ports, --full-scan for a full scan, or --range-scan for a range scan")
         sys.exit(1)
 
     scan_in_progress = True
