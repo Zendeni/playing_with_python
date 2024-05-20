@@ -22,6 +22,14 @@ This Python script utilizes the `nmap` library to scan specified ports or all po
 ```bash
 pip install python-nmap
 
-Usage:
-python nmap_scan.py -H <target_host> [-p <target_ports> | --full-scan]
+Examples
+Scan specific ports:
+python nmap_scan.py -H 192.168.1.1 -p 22,80,443
+
+Perform a full scan:
+python nmap_scan.py -H 192.168.1.1 --full-scan
+
+Perform a range scan for ports 1-100:
+python nmap_scan.py -H 192.168.1.1 --range-scan
+
 
