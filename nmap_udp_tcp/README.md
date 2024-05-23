@@ -32,6 +32,6 @@ python nmap_scanner.py -H <target_host> --full-scan --udp
 
 ## Example Output
 
-[*] 192.168.1.1 tcp/80 open http Apache 2.4.41
+[*] 192.168.1.1 tcp/80 open http Apache 2.4.41\n
 [*] 192.168.1.1 tcp/443 open https OpenSSL 1.1.1f
 
