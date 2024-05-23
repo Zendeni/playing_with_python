@@ -29,6 +29,11 @@ python nmap_scanner.py -H <target_host> -p 53,67,123 --udp
 
 python nmap_scanner.py -H <target_host> --full-scan --udp
 
+python nmap_scanner.py -H <target_host> --full-scan --tcp
+
+python nmap_scanner.py -H <target_host> --full-scan --both
+
+
 
 ## Example Output
 
