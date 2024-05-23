@@ -34,27 +34,39 @@ def full_scan(tgt_host, scan_type='tcp'):
         print(f"An unexpected error occurred: {e}")
 
 def main():
-    parser = argparse.ArgumentParser(description="Usage: %prog -H <target host> [-p <target port(s)> | --full-scan] [--udp]")
+    parser = argparse.ArgumentParser(description="Usage: %prog -H <target host> [-p <target port(s)> | --full-scan] [--udp | --tcp] [--both]")
     parser.add_argument("-H", dest="tgt_host", type=str, required=True, help="specify target host")
     parser.add_argument("-p", dest="tgt_ports", type=str, help="specify target port(s), separated by commas if multiple")
     parser.add_argument("--full-scan", dest="full_scan", action="store_true", help="scan all ports and services")
-    parser.add_argument("--udp", dest="udp_scan", action="store_true", help="perform a UDP scan instead of TCP")
+    parser.add_argument("--udp", dest="udp_scan", action="store_true", help="perform a UDP scan")
+    parser.add_argument("--tcp", dest="tcp_scan", action="store_true", help="perform a TCP scan")
+    parser.add_argument("--both", dest="both_scan", action="store_true", help="perform both TCP and UDP scans")
 
     args = parser.parse_args()
     tgt_host = args.tgt_host
-    scan_type = 'udp' if args.udp_scan else 'tcp'
+
+    if args.both_scan:
+        scan_types = ['tcp', 'udp']
+    else:
+        scan_types = []
+        if args.tcp_scan:
+            scan_types.append('tcp')
+        if args.udp_scan:
+            scan_types.append('udp')
 
     if args.full_scan:
-        full_scan(tgt_host, scan_type)
+        for scan_type in scan_types:
+            full_scan(tgt_host, scan_type)
     elif args.tgt_ports:
         tgt_ports = args.tgt_ports.split(',')
-        for tgt_port in tgt_ports:
-            if tgt_port.isdigit():
-                nmap_scan(tgt_host, tgt_port, scan_type)
-            else:
-                print(f"Invalid port number: {tgt_port}")
+        for scan_type in scan_types:
+            for tgt_port in tgt_ports:
+                if tgt_port.isdigit():
+                    nmap_scan(tgt_host, tgt_port, scan_type)
+                else:
+                    print(f"Invalid port number: {tgt_port}")
     else:
-        print("Please specify either -p for target ports or --full-scan for a full scan")
+        print("Please specify either -p for target ports or --full-scan for a full scan, and at least one of --tcp, --udp, or --both")
 
 if __name__ == "__main__":
     main()
