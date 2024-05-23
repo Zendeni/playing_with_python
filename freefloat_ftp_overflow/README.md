@@ -12,8 +12,6 @@ python3 exploit.py 192.168.1.10 PWND
 
 ## Supported Commands
 
-AUTH (Authentication/Security Mechanism):
-
 1. The AUTH command is used to specify an authentication mechanism to the server. This command is part of the FTP authentication and security extensions and allows for more secure methods of authenticating than plain text username and password.
 
 
