@@ -7,7 +7,7 @@ This script exploits a buffer overflow vulnerability in Freefloat FTP 1.0 by sen
 ## Usage
 
 ```sh
-python3 exploit.py 192.168.1.10 PWND
+python3 exploit.py 192.168.1.10 APPE
 ```
 
 ## Supported Commands
