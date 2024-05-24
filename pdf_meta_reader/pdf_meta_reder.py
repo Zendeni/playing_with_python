@@ -3,11 +3,11 @@ import argparse
 
 def print_meta(file_name):
     with open(file_name, 'rb') as pdf_file:
-        pdf_reader = PyPDF2.PdfFileReader(pdf_file)
-        doc_info = pdf_reader.getDocumentInfo()
+        pdf_reader = PyPDF2.PdfReader(pdf_file)
+        doc_info = pdf_reader.metadata
         print(f'[*] PDF MetaData For: {file_name}')
-        for meta_item in doc_info:
-            print(f'[+] {meta_item}: {doc_info[meta_item]}')
+        for meta_item, value in doc_info.items():
+            print(f'[+] {meta_item}: {value}')
 
 def main():
     parser = argparse.ArgumentParser(description='Extract metadata from a PDF file.')
