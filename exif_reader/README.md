@@ -1,6 +1,6 @@
 # Image Downloader and EXIF Checker
 
-This script downloads images from a specified URL and checks them for EXIF data, including GPS metadata.
+This script downloads images to current directory from a specified URL and checks them for EXIF data, including GPS metadata.
 
 ## Requirements
 
