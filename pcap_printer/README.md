@@ -32,8 +32,3 @@ python packet_sniffer.py -p <pcap_file>
 
 ![image](https://github.com/Zendeni/playing_with_python/assets/53412927/7184c516-74ba-46b2-a491-d93ed5190bf8)
 
-
-
-
-
-![image](https://github.com/Zendeni/playing_with_python/assets/53412927/e5448acd-e8df-4b85-b6cb-df949b4fce09)
