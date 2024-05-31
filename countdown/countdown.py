@@ -47,7 +47,6 @@ def main():
 
             if seconds_left == 0:
                 print()
-                print(' * * * * BOOM * * * *')
                 break
 
             print()
