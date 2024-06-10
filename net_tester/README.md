@@ -26,4 +26,4 @@ Example: -s 192.168.1.100\
 -t <target>: (Required) Specify the target IP address.\
 Example: -t 192.168.1.1\
 -c <count>: (Optional) Specify the number of packets to send for each test. The default is 1.\
-Example: -c 10\
+Example: -c 10
