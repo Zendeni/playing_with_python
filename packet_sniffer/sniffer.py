@@ -16,7 +16,7 @@ def main():
     parser = argparse.ArgumentParser(description='Packet Sniffer')
     parser.add_argument('-i', '--interface', type=str, required=True, help='Specify interface to listen on')
     parser.add_argument('-p', '--patterns', type=str, nargs='+', required=True, 
-                        help='Specify patterns in the form key=pattern. Example: name="(?i)NAME=(.*)&" room="(?i)ROOM=(.*)"')
+                        help='Specify patterns in the form key=pattern.')
     args = parser.parse_args()
 
     conf.iface = args.interface
