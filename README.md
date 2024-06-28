@@ -47,11 +47,11 @@ Each script is contained in its own directory, with specific instructions and de
 
 
 ## Contributing
-If you want to contribute to this repository, please follow these steps:
+If you want to contribute to this repository, please follow these steps:\
 
-Fork the repository.
-Create a new branch (git checkout -b feature-branch).
-Commit your changes (git commit -am 'Add new feature').
-Push to the branch (git push origin feature-branch).
-Create a new Pull Request.
+Fork the repository.\
+Create a new branch (git checkout -b feature-branch).\
+Commit your changes (git commit -am 'Add new feature').\
+Push to the branch (git push origin feature-branch).\
+Create a new Pull Request.\
 
