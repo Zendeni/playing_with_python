@@ -1,5 +1,5 @@
 ## Python Emailer Script
-This script sends an email using a Gmail SMTP server. It uses the smtplib and email.mime.text libraries.\
+This script sends an email using a Gmail SMTP server. It uses the smtplib and email.mime.text libraries.
 
 
 ## Requirements
